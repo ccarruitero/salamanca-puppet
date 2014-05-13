@@ -1,0 +1,2 @@
+# salamanca-puppet
+a puppet recipe for salamanca
