@@ -2,28 +2,19 @@ exec { "apt-get update":
   path => "/usr/bin"
 }
 
-package {"git":
-  ensure => present
-}
+include dependencies
+include curl
+include git
+include nginx
+class { 'mysql::install': }
+include capistrano
+include monit
 
-package {"nginx_passenger":
-  ensure => present
-}
-
-package {"monit":
-  ensure => present
-}
-
-package {"mysql-client":
-  ensure => present
-}
-
-package {"rails":
-  ensure => present,
-  provider => gem
-}
-
-package {"resque":
-  ensure => present,
-  provider => gem
-}
+# set order
+Class['dependencies'] ->
+Class['curl'] ->
+Class['git'] ->
+Class['nginx'] ->
+Class['mysql::install'] ->
+Class['capistrano'] ->
+Class['monit']
